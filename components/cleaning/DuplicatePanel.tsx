@@ -64,7 +64,7 @@ export default function DuplicatePanel() {
         />
 
         {/* Row info stats */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Total Baris Saat Ini</span>
             <div className="text-2xl font-bold text-slate-800 mt-1">

@@ -115,7 +115,7 @@ export default function NormalizationPanel() {
 
         {/* Current Stats summary */}
         {selectedProfile && (
-          <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 grid grid-cols-3 gap-4 text-xs">
+          <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
               <span className="text-slate-400 font-medium block">Min</span>
               <span className="font-bold text-slate-700 block text-sm mt-0.5">

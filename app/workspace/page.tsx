@@ -16,30 +16,56 @@ import {
   Table,
   Wand2,
   Shuffle,
-  BarChart3
+  BarChart3,
+  Menu,
+  X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function WorkspacePage() {
   const { dataset, metadata, clearDataset } = useDatasetStore();
   const [activeTab, setActiveTab] = useState<'overview' | 'data' | 'cleaning' | 'transform' | 'analysis'>('overview');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleClearDataset = () => {
     clearDataset();
     setActiveTab('overview');
+    setIsMobileMenuOpen(false);
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 text-slate-900">
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0">
-        <div className="p-4 border-b border-gray-200">
+    <div className="flex h-screen bg-gray-50 text-slate-900 relative overflow-hidden">
+      {/* Mobile Sidebar Overlay Backdrop */}
+      {isMobileMenuOpen && (
+        <div
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+        />
+      )}
+
+      {/* Sidebar drawer */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out md:static md:translate-x-0 ${
+          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <Link href="/" className="hover:opacity-90 transition-opacity block">
             <Logo />
           </Link>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="p-1 text-slate-500 hover:text-slate-950 rounded-md md:hidden hover:bg-slate-100 cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           <button
-            onClick={() => setActiveTab('overview')}
+            onClick={() => {
+              setActiveTab('overview');
+              setIsMobileMenuOpen(false);
+            }}
             disabled={!metadata}
             className={`w-full flex items-center space-x-3 px-4 py-2.5 text-sm font-medium rounded-md transition-all ${
               activeTab === 'overview'
@@ -52,7 +78,10 @@ export default function WorkspacePage() {
           </button>
           
           <button
-            onClick={() => setActiveTab('data')}
+            onClick={() => {
+              setActiveTab('data');
+              setIsMobileMenuOpen(false);
+            }}
             disabled={!metadata}
             className={`w-full flex items-center space-x-3 px-4 py-2.5 text-sm font-medium rounded-md transition-all ${
               activeTab === 'data'
@@ -65,7 +94,10 @@ export default function WorkspacePage() {
           </button>
           
           <button
-            onClick={() => setActiveTab('cleaning')}
+            onClick={() => {
+              setActiveTab('cleaning');
+              setIsMobileMenuOpen(false);
+            }}
             disabled={!metadata}
             className={`w-full flex items-center space-x-3 px-4 py-2.5 text-sm font-medium rounded-md transition-all ${
               activeTab === 'cleaning'
@@ -78,7 +110,10 @@ export default function WorkspacePage() {
           </button>
           
           <button
-            onClick={() => setActiveTab('transform')}
+            onClick={() => {
+              setActiveTab('transform');
+              setIsMobileMenuOpen(false);
+            }}
             disabled={!metadata}
             className={`w-full flex items-center space-x-3 px-4 py-2.5 text-sm font-medium rounded-md transition-all ${
               activeTab === 'transform'
@@ -91,7 +126,10 @@ export default function WorkspacePage() {
           </button>
           
           <button
-            onClick={() => setActiveTab('analysis')}
+            onClick={() => {
+              setActiveTab('analysis');
+              setIsMobileMenuOpen(false);
+            }}
             disabled={!metadata}
             className={`w-full flex items-center space-x-3 px-4 py-2.5 text-sm font-medium rounded-md transition-all ${
               activeTab === 'analysis'
@@ -107,8 +145,16 @@ export default function WorkspacePage() {
 
       <main className="flex-1 flex flex-col h-full overflow-hidden min-w-0">
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
-           <div className="text-sm text-slate-500 truncate mr-4">
-             Dataset: <span className="font-semibold text-slate-800">{metadata ? metadata.filename : 'Belum ada file'}</span>
+           <div className="flex items-center space-x-3 text-sm text-slate-500 truncate mr-4">
+             <button
+               onClick={() => setIsMobileMenuOpen(true)}
+               className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg md:hidden cursor-pointer"
+             >
+               <Menu className="w-5 h-5" />
+             </button>
+             <span className="truncate">
+               Dataset: <span className="font-semibold text-slate-800">{metadata ? metadata.filename : 'Belum ada file'}</span>
+             </span>
            </div>
            <div className="flex space-x-3 shrink-0">
              {metadata && (

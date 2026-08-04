@@ -123,7 +123,7 @@ export default function MissingValuePanel() {
         </div>
 
         {selectedProfile && (
-          <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
+          <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
               <span className="text-slate-400 font-medium">Tipe Kolom</span>
               <p className="font-bold text-slate-700 mt-0.5">{selectedProfile.dataType}</p>
@@ -134,7 +134,7 @@ export default function MissingValuePanel() {
                 {selectedProfile.missingCount.toLocaleString()} baris
               </p>
             </div>
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <span className="text-slate-400 font-medium">Persentase Kosong</span>
               <p className="font-bold text-red-600 mt-0.5">{selectedProfile.missingPercentage}%</p>
             </div>

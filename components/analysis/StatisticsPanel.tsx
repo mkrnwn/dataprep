@@ -166,7 +166,7 @@ export default function StatisticsPanel() {
                   <span>Ukuran Statistik Numerik</span>
                 </div>
                 
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {/* Mean */}
                   <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl">
                     <span className="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Mean (Rata-rata)</span>
