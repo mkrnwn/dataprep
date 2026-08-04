@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
 import {
   BarChart3,
   Wand2,
@@ -21,15 +22,9 @@ export default function Home() {
       <header className="sticky top-0 z-40 w-full bg-white/85 backdrop-blur-md border-b border-slate-200/80">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2.5">
-            <div className="bg-slate-900 text-white p-1.5 rounded-lg">
-              <Database className="w-5 h-5" />
-            </div>
-            <span className="text-lg font-bold tracking-tight text-slate-900">DataPrep</span>
-            <span className="text-[10px] font-bold bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded border border-blue-100 uppercase tracking-wider">
-              MVP
-            </span>
-          </div>
+          <Link href="/" className="hover:opacity-90 transition-opacity">
+            <Logo />
+          </Link>
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">

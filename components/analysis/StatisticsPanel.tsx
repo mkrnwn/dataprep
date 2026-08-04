@@ -42,9 +42,17 @@ export default function StatisticsPanel() {
 
     if (values.length === 0) return null;
 
-    const min = Math.min(...values); // safe if sampled, but let's do safe reduce
-    const max = Math.max(...values);
-    const sum = values.reduce((a, b) => a + b, 0);
+    let min = values[0];
+    let max = values[0];
+    let sum = 0;
+
+    for (let i = 0; i < values.length; i++) {
+      const val = values[i];
+      if (val < min) min = val;
+      if (val > max) max = val;
+      sum += val;
+    }
+
     const mean = sum / values.length;
 
     // Median
@@ -115,7 +123,7 @@ export default function StatisticsPanel() {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
       {/* Header */}
       <div className="p-5 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
         <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">

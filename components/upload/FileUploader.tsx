@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { UploadCloud, Loader2 } from 'lucide-react';
 import Papa from 'papaparse';
 import { useDatasetStore } from '@/stores/useDatasetStore';
+import { motion } from 'framer-motion';
 
 export default function FileUploader() {
   const [isDragging, setIsDragging] = useState(false);
@@ -50,9 +51,6 @@ export default function FileUploader() {
         header: true,
         skipEmptyLines: true,
         dynamicTyping: true,
-        // Kita cabut `chunk` karena `concat` berulang pada array 50.000 data sangat membocorkan memori.
-        // Kita juga cabut `worker: true` karena rentan gagal spawn di Next.js App Router.
-        // Parsing sekaligus di main thread (setelah UI loading muncul) terbukti jauh lebih stabil.
         complete: (results) => {
           console.log(`Parsing selesai! Total baris: ${results.data.length}`);
           
@@ -82,7 +80,7 @@ export default function FileUploader() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 text-slate-500 bg-white rounded-xl border-2 border-slate-200 shadow-sm w-full max-w-2xl">
+      <div className="flex flex-col items-center justify-center p-12 text-slate-500 bg-white rounded-xl border-2 border-slate-200 shadow-sm w-full max-w-2xl animate-pulse">
         <Loader2 className="w-10 h-10 animate-spin mb-4 text-blue-500"/>
         <p className="font-semibold text-slate-700">Membaca Dataset...</p>
         <p className="text-sm mt-2 text-slate-500">Mengurai puluhan ribu baris data membutuhkan beberapa detik, mohon tunggu.</p>
@@ -91,13 +89,28 @@ export default function FileUploader() {
   }
 
   return (
-    <div
-      className={`w-full max-w-2xl p-12 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${
-        isDragging ? 'border-blue-500 bg-blue-50 scale-[1.02]' : 'border-slate-300 bg-white hover:bg-slate-50'
+    <motion.div
+      className={`w-full max-w-2xl p-12 border-2 border-dashed rounded-xl text-center cursor-pointer ${
+        isDragging ? 'border-blue-500 bg-blue-50/50' : 'border-slate-300 bg-white'
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      whileHover={{ scale: 1.01, backgroundColor: '#f8fafc' }}
+      whileTap={{ scale: 0.99 }}
+      animate={isDragging ? {
+        scale: [1.015, 1.025, 1.015],
+        boxShadow: [
+          '0 0 10px rgba(59, 130, 246, 0.15)',
+          '0 0 25px rgba(59, 130, 246, 0.35)',
+          '0 0 10px rgba(59, 130, 246, 0.15)'
+        ]
+      } : { scale: 1, boxShadow: '0px 0px 0px rgba(0,0,0,0)' }}
+      transition={isDragging ? {
+        repeat: Infinity,
+        duration: 1.2,
+        ease: "easeInOut"
+      } : { duration: 0.2 }}
     >
       <UploadCloud className={`w-14 h-14 mb-4 mx-auto ${isDragging ? 'text-blue-500' : 'text-slate-400'}`} />
       <h3 className="text-xl font-semibold text-slate-700 mb-2">Unggah Dataset CSV Anda</h3>
@@ -114,6 +127,6 @@ export default function FileUploader() {
           onClick={(e) => { (e.target as HTMLInputElement).value = ''; }}
         />
       </label>
-    </div>
+    </motion.div>
   );
 }

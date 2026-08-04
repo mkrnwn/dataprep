@@ -126,7 +126,7 @@ export default function ChartPanel() {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300 flex flex-col h-full">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300 flex flex-col h-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
       {/* Header */}
       <div className="p-5 border-b border-gray-100 flex items-center justify-between bg-slate-50/50 shrink-0">
         <div className="flex items-center space-x-3">

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useDatasetStore } from '@/stores/useDatasetStore';
+import { motion } from 'framer-motion';
 import {
   Database,
   Columns,
@@ -17,6 +18,29 @@ import {
   Type,
   ToggleLeft
 } from 'lucide-react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 100,
+      damping: 15
+    }
+  }
+};
 
 export default function DatasetOverview() {
   const { metadata, profiles } = useDatasetStore();
@@ -127,9 +151,14 @@ export default function DatasetOverview() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+      >
         {/* Rows Card */}
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition-shadow">
+        <motion.div variants={cardVariants} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
           <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
             <Rows className="w-6 h-6" />
           </div>
@@ -138,10 +167,10 @@ export default function DatasetOverview() {
             <h3 className="text-2xl font-bold text-slate-800 mt-0.5">{metadata.rowCount.toLocaleString()}</h3>
             <p className="text-xs text-slate-500 mt-0.5">Catatan data masuk</p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Columns Card */}
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition-shadow">
+        <motion.div variants={cardVariants} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
           <div className="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
             <Columns className="w-6 h-6" />
           </div>
@@ -150,10 +179,10 @@ export default function DatasetOverview() {
             <h3 className="text-2xl font-bold text-slate-800 mt-0.5">{metadata.columnCount.toLocaleString()}</h3>
             <p className="text-xs text-slate-500 mt-0.5">Atribut atau fitur dataset</p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Missing Values Card */}
-        <div className={`bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition-shadow`}>
+        <motion.div variants={cardVariants} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
           <div className={`p-3 rounded-lg ${globalStats.totalMissing > 0 ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'}`}>
             <AlertCircle className="w-6 h-6" />
           </div>
@@ -167,10 +196,10 @@ export default function DatasetOverview() {
               }
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* File Size Card */}
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition-shadow">
+        <motion.div variants={cardVariants} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
           <div className="p-3 bg-slate-50 text-slate-600 rounded-lg">
             <Database className="w-6 h-6" />
           </div>
@@ -179,8 +208,8 @@ export default function DatasetOverview() {
             <h3 className="text-2xl font-bold text-slate-800 mt-0.5">{formatBytes(metadata.size)}</h3>
             <p className="text-xs text-slate-500 mt-0.5">Format file: CSV</p>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Control Bar (Filters / Sorting) */}
       <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -239,15 +268,21 @@ export default function DatasetOverview() {
       </div>
 
       {/* Grid of Column Profiles */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+      >
         {filteredAndSortedProfiles.map((p) => {
           const isNumeric = p.dataType === 'Integer' || p.dataType === 'Float';
           const hasMissing = p.missingCount > 0;
           
           return (
-            <div
+            <motion.div
               key={p.name}
-              className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden hover:shadow-md transition-shadow group"
+              variants={cardVariants}
+              className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
             >
               {/* Header Kolom */}
               <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-slate-50/50 group-hover:bg-slate-50/80 transition-colors">
@@ -280,14 +315,9 @@ export default function DatasetOverview() {
                   {/* Unique values details */}
                   <div className="space-y-1">
                     <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Nilai Unik</span>
-                    <div className="flex items-baseline space-x-1">
-                      <span className="text-base font-bold text-slate-700">
-                        {p.uniqueCount.toLocaleString()}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        ({metadata.rowCount > 0 ? ((p.uniqueCount / metadata.rowCount) * 100).toFixed(1) : 0}%)
-                      </span>
-                    </div>
+                    <span className="text-base font-bold text-slate-700 block">
+                      {p.uniqueCount.toLocaleString()}
+                    </span>
                   </div>
                 </div>
 
@@ -313,20 +343,20 @@ export default function DatasetOverview() {
                   </div>
                 </div>
 
-                {/* Section: Numerical Statistics */}
+                {/* Row 2: Numerical stats (if numeric type) */}
                 {isNumeric ? (
-                  <div className="bg-slate-50/80 p-3 rounded-lg border border-slate-100 space-y-2 mt-auto">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">Statistik Numerik</span>
+                  <div className="space-y-2 mt-auto border-t border-slate-100 pt-3">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">Ringkasan Statistik</span>
                     <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="bg-white rounded p-1 border border-slate-100 shadow-sm">
+                      <div className="bg-white rounded p-1 border border-slate-100 shadow-sm col-span-1">
                         <span className="text-[9px] uppercase font-medium text-slate-400 block">Min</span>
-                        <span className="text-xs font-bold text-slate-600 block truncate" title={String(p.min)}>
+                        <span className="text-xs font-bold text-slate-700 block truncate" title={String(p.min)}>
                           {p.min !== undefined ? p.min.toLocaleString() : '-'}
                         </span>
                       </div>
-                      <div className="bg-white rounded p-1 border border-slate-100 shadow-sm">
+                      <div className="bg-white rounded p-1 border border-slate-100 shadow-sm col-span-1">
                         <span className="text-[9px] uppercase font-medium text-slate-400 block">Max</span>
-                        <span className="text-xs font-bold text-slate-600 block truncate" title={String(p.max)}>
+                        <span className="text-xs font-bold text-slate-700 block truncate" title={String(p.max)}>
                           {p.max !== undefined ? p.max.toLocaleString() : '-'}
                         </span>
                       </div>
@@ -345,7 +375,7 @@ export default function DatasetOverview() {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           );
         })}
         {filteredAndSortedProfiles.length === 0 && (
@@ -353,7 +383,7 @@ export default function DatasetOverview() {
             Tidak ada kolom yang cocok dengan pencarian atau filter Anda.
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

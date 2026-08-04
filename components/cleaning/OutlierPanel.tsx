@@ -10,6 +10,7 @@ import {
   Trash2,
   Info
 } from 'lucide-react';
+import FeatureExplainer from '@/components/ui/FeatureExplainer';
 
 export default function OutlierPanel() {
   const { dataset, profiles, handleOutliers } = useDatasetStore();
@@ -115,7 +116,7 @@ export default function OutlierPanel() {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
       {/* Header */}
       <div className="p-5 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
         <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
@@ -129,6 +130,11 @@ export default function OutlierPanel() {
 
       {/* Content */}
       <div className="p-6 space-y-6">
+        {/* Feature Explainer */}
+        <FeatureExplainer
+          title="Mendeteksi & Mengoreksi Outlier (Pencilan)"
+          description="Metode Interquartile Range (IQR) mendeteksi nilai ekstrem dengan menghitung selisih kuartil atas (Q3) dan bawah (Q1). Gunakan tindakan Hapus jika outlier berupa kesalahan pengetikan/alat ukur, atau pertahankan jika anomali tersebut bermakna secara natural."
+        />
         {/* Column selection */}
         <div className="space-y-2">
           <label className="block text-xs font-semibold uppercase text-slate-500 tracking-wider">
@@ -216,10 +222,10 @@ export default function OutlierPanel() {
           <button
             onClick={handleApply}
             disabled={outlierInfo.count === 0 || isProcessing}
-            className={`flex items-center space-x-2 px-5 py-2.5 rounded-lg text-sm font-semibold shadow-sm transition-all ${
+            className={`flex items-center space-x-2 px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md transition-all ${
               outlierInfo.count > 0 && !isProcessing
-                ? 'bg-slate-900 text-white hover:bg-slate-800 hover:scale-[1.01] cursor-pointer'
-                : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
+                ? 'bg-gradient-to-r from-slate-800 to-slate-900 text-white hover:from-slate-700 hover:to-slate-800 hover:scale-[1.01] hover:shadow-lg cursor-pointer'
+                : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200 shadow-none'
             }`}
           >
             {isProcessing ? (

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
 import FileUploader from '@/components/upload/FileUploader';
 import DataTable from '@/components/dataset/DataTable';
 import DatasetOverview from '@/components/dataset/DatasetOverview';
@@ -16,6 +18,7 @@ import {
   Shuffle,
   BarChart3
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function WorkspacePage() {
   const { dataset, metadata, clearDataset } = useDatasetStore();
@@ -30,7 +33,9 @@ export default function WorkspacePage() {
     <div className="flex h-screen bg-gray-50 text-slate-900">
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0">
         <div className="p-4 border-b border-gray-200">
-          <h1 className="text-xl font-bold tracking-tight">DataPrep</h1>
+          <Link href="/" className="hover:opacity-90 transition-opacity block">
+            <Logo />
+          </Link>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           <button
@@ -125,17 +130,26 @@ export default function WorkspacePage() {
            </div>
         </header>
 
-        <div className={`p-6 flex-1 overflow-hidden bg-slate-50 flex flex-col ${!metadata ? 'items-center justify-center' : ''}`}>
+        <div className={`p-6 flex-1 overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100/50 flex flex-col ${!metadata ? 'items-center justify-center' : ''}`}>
           {!metadata ? (
              <FileUploader />
           ) : (
-             <>
-               {activeTab === 'overview' && <DatasetOverview />}
-               {activeTab === 'data' && <DataTable />}
-               {activeTab === 'cleaning' && <CleaningDashboard />}
-               {activeTab === 'transform' && <TransformDashboard />}
-               {activeTab === 'analysis' && <AnalysisDashboard />}
-             </>
+             <AnimatePresence mode="wait">
+               <motion.div
+                 key={activeTab}
+                 initial={{ opacity: 0, y: 10 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 exit={{ opacity: 0, y: -10 }}
+                 transition={{ duration: 0.15 }}
+                 className="flex-1 flex flex-col min-h-0 overflow-hidden"
+               >
+                 {activeTab === 'overview' && <DatasetOverview />}
+                 {activeTab === 'data' && <DataTable />}
+                 {activeTab === 'cleaning' && <CleaningDashboard />}
+                 {activeTab === 'transform' && <TransformDashboard />}
+                 {activeTab === 'analysis' && <AnalysisDashboard />}
+               </motion.div>
+             </AnimatePresence>
           )}
         </div>
       </main>

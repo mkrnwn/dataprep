@@ -9,6 +9,7 @@ import {
   Maximize2,
   Minimize2
 } from 'lucide-react';
+import FeatureExplainer from '@/components/ui/FeatureExplainer';
 
 export default function NormalizationPanel() {
   const { profiles, handleTransform } = useDatasetStore();
@@ -72,7 +73,7 @@ export default function NormalizationPanel() {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-in fade-in duration-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
       {/* Header */}
       <div className="p-5 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
         <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
@@ -86,6 +87,11 @@ export default function NormalizationPanel() {
 
       {/* Content */}
       <div className="p-6 space-y-6">
+        {/* Feature Explainer */}
+        <FeatureExplainer
+          title="Normalisasi Data (Feature Scaling)"
+          description="Metode Min-Max memetakan angka ke skala [0, 1], sedangkan Z-Score menstandardisasi data agar rata-rata = 0 dan standar deviasi = 1. Ini sangat penting untuk algoritma AI berbasis jarak seperti KNN atau Neural Networks agar tidak bias terhadap skala atribut."
+        />
         {/* Column Select */}
         <div className="space-y-2">
           <label className="block text-xs font-semibold uppercase text-slate-500 tracking-wider">
@@ -187,10 +193,10 @@ export default function NormalizationPanel() {
           <button
             onClick={handleApply}
             disabled={!selectedColumn || isProcessing}
-            className={`flex items-center space-x-2 px-5 py-2.5 rounded-lg text-sm font-semibold shadow-sm transition-all ${
+            className={`flex items-center space-x-2 px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md transition-all ${
               selectedColumn && !isProcessing
-                ? 'bg-slate-900 text-white hover:bg-slate-800 hover:scale-[1.01] cursor-pointer'
-                : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
+                ? 'bg-gradient-to-r from-slate-800 to-slate-900 text-white hover:from-slate-700 hover:to-slate-800 hover:scale-[1.01] hover:shadow-lg cursor-pointer'
+                : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200 shadow-none'
             }`}
           >
             {isProcessing ? (
